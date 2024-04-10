@@ -1,0 +1,23 @@
+{
+  "name": "web_crawler_project",
+  "version": "1.0.0",
+  "description": "first http project",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marnadusza/web_crawler_project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marnadusza/web_crawler_project/issues"
+  },
+  "homepage": "https://github.com/marnadusza/web_crawler_project#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
