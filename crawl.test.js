@@ -16,6 +16,13 @@ test('normalizeURL strip trailing slash', () => {
     expect(actual).toEqual(expected)
 }
    )
+test('normalizeURL capitals', () => {
+    const input = 'https://BLOG.boot.dev/path/'
+    const actual = normalizeURL(input)
+    const expected = 'blog.boot.dev/path'
+    expect(actual).toEqual(expected)
+}
+   )
 
 test('normalizeURL strip http', () => {
     const input = 'http://blog.boot.dev/path'
@@ -83,7 +90,7 @@ test('getURLsFromHTML both', () => {
     const inputHTMLBody = `
     <html>
     <body>
-    <a href="invalid">
+    <a href="invalid/">
     invalid URL
     </a>
     </body>
