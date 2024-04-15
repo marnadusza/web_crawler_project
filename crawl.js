@@ -1,33 +1,59 @@
 const jsdom = require('jsdom')
 const { JSDOM } = jsdom
 
-async function crawlPage(currentURL) {
-	console.log(`actively crawling: ${currentURL}`)
-	try {
-	const resp = await fetch(currentURL)
+async function crawlPage(baseURL, currentURL, pages) {
 	
-	if(resp.status > 399) {
-		console.log(`error in fetch with status code: ${resp.status} on page ${currentURL}`)
-		
-		return
+	const baseURLObj = new URL(baseURL)
+	const currentURLObj = new URL(currentURL)
+	
+	
+	if (baseURLObj.hostname !== currentURLObj.hostname) {
+		return pages
 	}
 
-	const contentType = resp.headers.get('Content-Type')
-	if(!contentType.includes('text/html')){
-	console.log(`no html response: content-type: ${contentType} on page ${currentURL}`)
-	return
+	const normalizedCurrentURL = normalizeURL(currentURL)
+	
+	if(pages[normalizedCurrentURL] > 0) {
+		pages[normalizedCurrentURL]++
+		return pages
 	}
-		
-	console.log(await resp.text())
+	
+	pages[normalizedCurrentURL] = 1
+	
+	console.log(`actively crawling: ${currentURL}`)
 
-	} catch(err) {
+	try {
+		const resp = await fetch(currentURL)
+
+		if (resp.status > 399) {
+			console.log(`error in fetch with status code: ${resp.status} on page ${currentURL}`)
+		
+			return pages
+		}
+
+		const contentType = resp.headers.get('Content-Type')
+		if (!contentType.includes('text/html')) {
+			console.log(`no html response: content-type: ${contentType} on page ${currentURL}`)
+		
+			return pages
+			
+		}
+
+		const htmlBody = await resp.text()
+		const nextURLs = getURLsFromHTML(htmlBody, baseURL)
+		
+
+		for (const nextURL of nextURLs) {
+			pages = await crawlPage(baseURL, nextURL, pages)
+				}
+		
+
+	} catch (err) {
 		console.log(`error in fetch: ${err.massage}, on page ${currentURL}`)
 	}
 	
-
-	// return resp.json()
+	return pages
 }
-
 
 function getURLsFromHTML(inputHTMLBody, inputBaseURL) {
 	const urls = []
@@ -68,5 +94,5 @@ function normalizeURL(urlString) {
 module.exports = {
 	normalizeURL,
 	getURLsFromHTML,
-	crawlPage
+	crawlPage,
 }
