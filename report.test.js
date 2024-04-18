@@ -3,6 +3,7 @@ const {sortPages} = require('./report.js');
 const {test, expect} = require('@jest/globals');
 
 
+
 test('sortPages 2 pages', () => {
     const input = {
         'https://wagslane.dev/path': 1,

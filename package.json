@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/marnadusza/web_crawler_project#readme",
   "devDependencies": {
+    "@happy-dom/jest-environment": "^14.7.1",
+    "happy-dom": "^14.7.1",
     "jest": "^29.7.0"
   },
   "dependencies": {

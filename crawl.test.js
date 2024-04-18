@@ -32,6 +32,7 @@ test('normalizeURL strip http', () => {
 }
    )
 
+
 test('getURLsFromHTML absolute', () => {
     const inputHTMLBody = `
     <html>
